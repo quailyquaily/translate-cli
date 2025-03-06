@@ -1,18 +1,1 @@
-{
-  "a": {
-    "apple": "蘋果公司",
-    "nested": {
-      "phrase": "我可以吃玻璃，並且不會受傷。"
-    }
-  },
-  "a.phrase": "我可以吃玻璃，並且不會受傷。",
-  "api": "應用程式介面",
-  "hello": "你好",
-  "home.subtitle": "例如，加密貨幣和區塊鏈技術最初是為了在沒有可信第三方的情況下運作而創造的。",
-  "home.title": "區塊鏈中的去中心化是什麼？",
-  "home.with_ai": "我們的專案為客戶提供強大的模型上下文協定（MCP）服務。",
-  "user_view.profile.hint": "在未經您同意的情況下，我們不會共享或披露您的個人信息，除非出於本通知中所述的目的或法律要求。",
-  "user_view.profile.subtitle": "更新您的個人信息",
-  "user_view.profile.title": "個人資料",
-  "user_view.save": "儲存"
-}
+{}

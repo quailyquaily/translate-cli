@@ -12,6 +12,11 @@ A command-line interface (CLI) tool that uses AI to translate locale files based
 ## Usage
 
 ```bash
+# create empty locale files
+$ echo "{}" > example/langs/ja.json
+$ echo "{}" > example/langs/zh-TW.json
+
+# translate
 $ translate-cli translate -s example/langs/en-US.json -d example/langs -g example/glossary.json -b example/background.txt --batch=20
 📦 batch size: 20
 📄 source:
