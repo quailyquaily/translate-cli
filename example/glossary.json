@@ -1,0 +1,18 @@
+{
+  "decentralized": {
+    "ja": "分散型",
+    "zh-TW": "去中心化"
+  },
+  "blockchain": {
+    "ja": "ブロックチェーン",
+    "zh-TW": "區塊鏈"
+  },
+  "cryptocurrency": {
+    "ja": "仮想通貨",
+    "zh-TW": "加密货币"
+  },
+  "MCP": {
+    "ja": "モデルコンテキストプロトコル（Model Context Protocol）",
+    "zh-TW": "模型上下文協定（Model Context Protocol）"
+  }
+}

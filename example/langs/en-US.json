@@ -1,0 +1,21 @@
+{
+  "a": {
+    "apple": "Apple Inc.",
+    "nested": {
+      "phrase": "I can eat glass and it doesn't hurt me."
+    }
+  },
+  "a.phrase": "I can eat glass and it doesn't hurt me.",
+  "api": "Application Programming Interface",
+
+  "hello": "Hello",
+
+  "home.title": "What is Decentralization in Blockchain?",
+  "home.subtitle": "For example, the cryptocurrencies and blockchain technology in general, were originally created to operate without the need for trusted third parties.",
+  "home.with_ai": "Our project provides powerful MCP services for clients",
+
+  "user_view.profile.title": "Profile",
+  "user_view.profile.subtitle": "Update your personal information",
+  "user_view.profile.hint": "We do not share or disclosure any of your personal information without your consent, other than for the purposes specified in this notice or where there is a legal requirement.",
+  "user_view.save": "Save"
+}
