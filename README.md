@@ -8,6 +8,8 @@ A command-line interface (CLI) tool that uses AI to translate locale files based
 - support glossary
 - support adding background information
 - batch translation
+- no "您" or "您好" or "您的" in Chinese
+- improved writing style in Japanese
 
 ## Usage
 
