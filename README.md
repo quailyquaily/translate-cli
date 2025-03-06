@@ -42,6 +42,18 @@ in which,
   - if the size is too large, it may cause out of context window error.
   - some AI providers issue to handle complex JSON format, if you encounter this issue, you can try to reduce the size to 1
 
+## Install
+
+Please check the latest release [here](https://github.com/quailyquaily/translate-cli/tags), and download the binary for your platform.
+
+Extract the binary and put it in your `$PATH` environment variable.
+
+## Install from source
+
+```bash
+go install github.com/quailyquaily/translate-cli@latest
+```
+
 ## How it works
 
 `translate-cli` reads the directory containing locale files, retrieves translations from AI, and then writes the translated content back to the same files.
@@ -57,12 +69,6 @@ If you want `translate-cli` to translate a specific value, you can add a "!" at 
 - [ ] Azure OpenAI
 - [ ] Bedrock
 - [ ] Susano
-
-## Install from source
-
-```bash
-go install github.com/quailyquaily/translate-cli@latest
-```
 
 ## Config
 
