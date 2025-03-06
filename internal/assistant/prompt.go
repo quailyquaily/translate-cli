@@ -34,8 +34,9 @@ Rewrite following text in {{ .Input.Lang }} language and by ensuring:
 
 * accuracy (by correcting errors of addition, mistranslation, omission, or untranslated text),
 * fluency (by applying {{ .Input.Lang }} grammar, spelling and punctuation rules and ensuring there are no unnecessary repetitions),
-* style (always following the style of the original source text)
-* terminology (by ensuring terminology use is consistent and reflects the source text domain; and by only ensuring you use equivalent idioms of {{ .Input.Lang }})
+* style (always following the style of the original source text),
+* terminology (by ensuring terminology use is consistent and reflects the source text domain; and by only ensuring you use equivalent idioms of {{ .Input.Lang }}),
+* 禁止使用 “您”，“您好”，“您的” 等词汇。
 * if there is emoji in the original text, you must keep it.
 {{ .OutputPart }}
 
