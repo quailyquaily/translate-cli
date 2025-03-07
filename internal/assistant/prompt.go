@@ -2,7 +2,6 @@ package assistant
 
 import (
 	"bytes"
-	"fmt"
 	"text/template"
 )
 
@@ -155,8 +154,6 @@ func (input *TranslateInput) GetTranslatePrompt() string {
 			"Input":          input,
 		})
 	}
-
-	fmt.Printf("inst: %v\n", inst)
 
 	return inst
 }

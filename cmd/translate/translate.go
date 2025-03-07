@@ -85,57 +85,61 @@ func NewCmd() *cobra.Command {
 
 func process(ctx context.Context, ant *assistant.Assistant,
 	source *parser.LocaleFileContent, target *parser.LocaleFileContent, glossary *parser.GlossaryContent, background string) error {
-	count := 1
 
 	groupResult := []*assistant.TranslateInput{}
 
-	var localeItems []structs.JSONMap
-	if batchSize > 1 {
-		localeItems = source.LocaleItemsMap.Split(batchSize)
-	} else {
-		localeItems = []structs.JSONMap{source.LocaleItemsMap}
-	}
+	itemsNeedToTranslate := structs.NewJSONMap()
 
-	for _, items := range localeItems {
-		// translate each group
-		contentItems := structs.JSONMap{}
-		for k, _v := range items {
-			needToTranslate := false
-			v := _v.(string)
-			if v != "" {
-				if _, ok := target.LocaleItemsMap[k]; !ok {
-					// key does not exist, translate it
+	for k, _v := range source.LocaleItemsMap {
+		needToTranslate := false
+		v := _v.(string)
+		if v != "" {
+			if _, ok := target.LocaleItemsMap[k]; !ok {
+				// key does not exist, translate it
+				needToTranslate = true
+			} else {
+				// key exists
+				if target.LocaleItemsMap.GetString(k) == "" {
+					// empty string, translate it
 					needToTranslate = true
-				} else {
-					// key exists
-					if target.LocaleItemsMap.GetString(k) == "" {
-						// empty string, translate it
-						needToTranslate = true
-					} else if target.LocaleItemsMap.GetString(k)[0] == '!' {
-						// value starts with "!", translate it
-						needToTranslate = true
-					}
+				} else if target.LocaleItemsMap.GetString(k)[0] == '!' {
+					// value starts with "!", translate it
+					needToTranslate = true
 				}
-
-				if needToTranslate {
-					if batchSize > 1 {
-						contentItems[k] = v
-					} else {
-						groupResult = append(groupResult, &assistant.TranslateInput{
-							Key:        k,
-							Content:    v,
-							Lang:       target.Lang,
-							LangCode:   target.Code,
-							Background: background,
-							Glossary:   glossary.GetMapByLang(target.Code),
-						})
-					}
-				}
-
-				fmt.Printf("\r🔄 %s: %d/%d", target.Path, count, len(source.LocaleItemsMap))
-				count += 1
+			}
+			if needToTranslate {
+				itemsNeedToTranslate.SetValue(k, v)
 			}
 		}
+	}
+
+	needToTranslateSize := itemsNeedToTranslate.Size()
+
+	var splitItems []structs.JSONMap
+	if batchSize > 1 && needToTranslateSize > batchSize {
+		splitItems = itemsNeedToTranslate.Split(batchSize)
+	} else {
+		splitItems = []structs.JSONMap{itemsNeedToTranslate}
+	}
+
+	contentItems := structs.JSONMap{}
+	for _, item := range splitItems {
+		for k, v := range item {
+			// translate each group
+			if batchSize > 1 {
+				contentItems.SetValue(k, v)
+			} else {
+				groupResult = append(groupResult, &assistant.TranslateInput{
+					Key:        k,
+					Content:    item.GetString(k),
+					Lang:       target.Lang,
+					LangCode:   target.Code,
+					Background: background,
+					Glossary:   glossary.GetMapByLang(target.Code),
+				})
+			}
+		}
+
 		if batchSize > 1 {
 			if len(contentItems) > 0 {
 				groupResult = append(groupResult, &assistant.TranslateInput{
@@ -149,6 +153,7 @@ func process(ctx context.Context, ant *assistant.Assistant,
 		}
 	}
 
+	count := 0
 	if batchSize > 1 {
 		for _, item := range groupResult {
 			ret, err := ant.TranslateBatch(ctx, item)
@@ -157,7 +162,9 @@ func process(ctx context.Context, ant *assistant.Assistant,
 			}
 			for k, v := range ret {
 				target.LocaleItemsMap.SetValue(k, v)
+				count += 1
 			}
+			fmt.Printf("\r🔄 %s: %d/%d", target.Path, count, needToTranslateSize)
 		}
 	} else {
 		for _, item := range groupResult {
@@ -166,6 +173,8 @@ func process(ctx context.Context, ant *assistant.Assistant,
 				return err
 			}
 			target.LocaleItemsMap.SetValue(item.Key, result)
+			count += 1
+			fmt.Printf("\r🔄 %s: %d/%d", target.Path, count, needToTranslateSize)
 		}
 	}
 
@@ -179,7 +188,8 @@ func process(ctx context.Context, ant *assistant.Assistant,
 		return err
 	}
 
-	fmt.Printf("\r✅ %s: %d/%d\n", target.Path, len(source.LocaleItemsMap), len(source.LocaleItemsMap))
+	fmt.Printf("\r✅ %s: %d/%d, total: %d, ignore: %d\n",
+		target.Path, count, needToTranslateSize, len(source.LocaleItemsMap), len(source.LocaleItemsMap)-needToTranslateSize)
 
 	return nil
 }

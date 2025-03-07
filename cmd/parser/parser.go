@@ -83,7 +83,7 @@ func NewGlossaryFromJSONFile(path string) (*GlossaryContent, error) {
 }
 
 func (g *GlossaryContent) GetMapByLang(lang string) *GlossaryMapItem {
-	if lang != "" && g.Maps != nil {
+	if lang != "" && g != nil && g.Maps != nil {
 		if _, ok := g.Maps[lang]; !ok {
 			return nil
 		}
